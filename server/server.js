@@ -105,5 +105,21 @@ app.post('/login', (req, res, next) => {
 
 )
 
+
+app.get('/api/authenticate', function(req,res){
+    console.log('inside authenticate api')
+    console.log(req.user)
+
+    if(req.user!=null){
+        return res.json({
+            authenticated: true
+        })
+    }
+    return res.json({
+        authenticated: false
+    })
+})
+
 app.listen(port)
 
+console.log('listenting to port ' + port)

@@ -1,9 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
 import './loginpage.css'
+import {withRouter} from 'react-router-dom'
+import Auth from '../Auth'
 
 
-export default class LoginPage extends React.Component{
+class LoginPage extends React.Component{
 
     constructor(props){
         super(props)
@@ -27,7 +29,18 @@ export default class LoginPage extends React.Component{
                 password: this.state.password
             })
 
-        }).then(resp=> resp.json()).then(data=> console.log(data)).catch(err=>{
+        }).then(resp=> resp.json()).then(data=> {
+            if(data.msg=="success"){
+                // redirect to homepage
+                console.log('login success')
+                Auth.authenticate()
+                console.log("after auth authenticate: " + Auth.isAuthenticated)
+                this.props.history.push('/')
+            }
+            else{
+                alert('login failed')
+            }
+        }).catch(err=>{
             console.log(err)
             alert('failed to login')
             
@@ -49,3 +62,5 @@ export default class LoginPage extends React.Component{
         )
     }
 }
+
+export default withRouter(LoginPage)
